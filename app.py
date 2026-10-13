@@ -1,203 +1,83 @@
-import os
+import base64
 import streamlit as st
 
-# Cấu hình trang web
-st.set_page_config(page_title="A Little Dream - Y2K Edition", page_icon="🪩", layout="wide")
+st.set_page_config(page_title="A Little Dream — Graduation", page_icon="☁️", layout="wide")
 
-# CSS tích hợp Y2K màu sắc, hiệu ứng chuyển động và đĩa CD xoay
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Syne:wght@700;800&display=swap');
-
-/* Background chuyển màu Dreamcore mềm mại */
-.stApp {
-    background: linear-gradient(-45deg, #e0f2fe, #bae6fd, #f0f9ff, #7dd3fc);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-}
-
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-[data-testid="stSidebar"] {
-    background: rgba(255, 255, 255, 0.88);
-    border-right: 2px dashed #38bdf8;
-    backdrop-filter: blur(10px);
-}
-
-/* Thẻ thông tin bay bổng */
-.dream-card {
-    background: rgba(255, 255, 255, 0.85);
-    border: 2px solid #ffffff;
-    border-radius: 24px;
-    padding: 28px;
-    box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25);
-    margin-bottom: 20px;
-    transition: all 0.4s ease;
-}
-
-.dream-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 18px 40px rgba(2, 132, 199, 0.35);
-}
-
-/* Tiêu đề chính Y2K Chrome */
-.hero-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(2.8rem, 6.5vw, 4.8rem);
-    background: linear-gradient(180deg, #ffffff 10%, #38bdf8 50%, #0284c7 90%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(3px 4px 0px rgba(3, 105, 161, 0.35));
-    line-height: 1.1;
-    text-transform: uppercase;
-    animation: floatTitle 3s ease-in-out infinite;
-}
-
-@keyframes floatTitle {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-6px); }
-}
-
-.sparkle-text {
-    font-family: 'Pixelify Sans', cursive;
-    color: #0284c7;
-    font-size: 1.2rem;
-}
-
-/* Màn hình chờ mở thiệp Y2K */
-.y2k-cover {
-    text-align: center;
-    padding: 50px 20px;
-    background: rgba(255, 255, 255, 0.88);
-    border: 3px solid #38bdf8;
-    border-radius: 28px;
-    box-shadow: 0 0 35px rgba(2, 132, 199, 0.3);
-    max-width: 620px;
-    margin: 40px auto;
-}
-
-.pixel-title {
-    font-family: 'Pixelify Sans', cursive;
-    font-size: 2.6rem;
-    background: linear-gradient(180deg, #ffffff 0%, #38bdf8 50%, #0284c7 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 15px;
-}
-
-.polaroid {
-    background: white;
-    padding: 14px 14px 32px;
-    border-radius: 6px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    transform: rotate(2.5deg);
-    border: 1px solid #e2e8f0;
-}
-
-/* Đĩa CD xoay tròn */
-.spinning-cd {
-    animation: spin 4s linear infinite;
-    display: inline-block;
-    font-size: 2.2rem;
-}
-
-@keyframes spin {
-    100% { transform: rotate(360deg); }
-}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+.stApp { background: radial-gradient(circle at 12% 10%, #fff 0 3%, transparent 3.5%), radial-gradient(circle at 88% 18%, #fff9 0 5%, transparent 5.5%), linear-gradient(155deg,#eaf8ff,#c9e9ff 52%,#effaff); color:#31506d; font-family:'DM Sans',sans-serif; }
+[data-testid="stSidebar"] { background:rgba(255,255,255,.86); }
+.block-container { max-width:1120px; padding-top:2rem; padding-bottom:4rem; }
+h1,h2,h3 { font-family:'Space Grotesk',sans-serif !important; color:#31506d !important; }
+.dream-card { background:rgba(255,255,255,.76); border:1px solid white; border-radius:26px; padding:26px; box-shadow:0 12px 36px #5091be20; }
+.kicker { letter-spacing:.22em; text-transform:uppercase; font-size:.72rem; font-weight:700; color:#6a9ec4; }
+.hero-title { font-family:'Space Grotesk',sans-serif; font-size:clamp(2.7rem,7vw,5.7rem); line-height:.98; letter-spacing:-.06em; color:#31506d; }
+.sparkle { color:#91bfe2; letter-spacing:.5em; }
+.polaroid { background:white; padding:12px 12px 30px; border-radius:5px; box-shadow:0 12px 26px #3f6f972e; transform:rotate(2deg); }
+.small-note { color:#6688a6; font-size:.92rem; }
+div.stButton>button { border-radius:999px; border:1px solid #9acdf0; background:#fafdff; color:#31506d; font-weight:700; }
 </style>
 """, unsafe_allow_html=True)
 
-# Khởi tạo trạng thái mở thiệp
-if "opened" not in st.session_state:
-    st.session_state.opened = False
+with st.sidebar:
+    st.markdown("## ☁️ Your little dream")
+    st.caption("Điền thông tin để cá nhân hoá thiệp.")
+    name = st.text_input("Tên của m", "Your Name")
+    class_name = st.text_input("Lớp", "Class of 2026")
+    school = st.text_input("Trường", "Your School")
+    date_text = st.text_input("Ngày", "A day to remember")
+    time_text = st.text_input("Thời gian", "At sunset")
+    location = st.text_input("Địa điểm", "Somewhere special")
+    message = st.text_area("Lời nhắn", "One chapter ends, another begins. Thank you for being part of my little story.", height=120)
+    sign_off = st.text_input("Ký tên", "with love,")
+    st.markdown("---")
+    photo = st.file_uploader("Thêm ảnh (JPG, PNG, WEBP)", type=["jpg","jpeg","png","webp"])
+    music = st.file_uploader("Thêm nhạc (MP3, WAV, OGG)", type=["mp3","wav","ogg"])
+    st.caption("M có thể đổi thông tin và chọn file ngay tại đây.")
 
-# --- MÀN HÌNH CHỜ (INTRO COVER) ---
-if not st.session_state.opened:
-    st.markdown("""
-    <div class="y2k-cover">
-        <div class="spinning-cd">💿</div>
-        <div class="pixel-title">★ THIỆP MỜI KÝ YẾU ★</div>
-        <p style="font-size: 1.1rem; color: #334155; font-weight: 600; margin-bottom: 25px;">
-            🪩 <span class="sparkle-text">NewJeans - Ditto Vibe</span> | Y2K Dreamcore 🪩<br>
-            Bấm nút bên dưới để mở thiệp và thưởng thức âm nhạc nha!
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("💿 MỞ THIỆP & BẬT NHẠC NGAY", use_container_width=True):
-            st.session_state.opened = True
-            st.rerun()
+st.markdown('<div class="kicker">✦ a tiny celebration ✦</div>', unsafe_allow_html=True)
+st.markdown(f'<div class="hero-title">{name.strip() or "Your Name"}<br><span style="color:#78b7e7;">in the clouds</span></div>', unsafe_allow_html=True)
+st.markdown('<div class="sparkle">✧ ☆ ✧ ☆ ✧</div>', unsafe_allow_html=True)
+st.write("")
+left, right = st.columns([1.08, .92], gap="large")
 
-else:
-    # --- GIAO DIỆN CHÍNH SAU KHI MỞ THIỆP ---
-    with st.sidebar:
-        st.markdown("## ☁️ Tùy chỉnh thiệp")
-        name = st.text_input("Tên người mời", value="NGUYỄN HÀ MY")
-        class_name = st.text_input("Lớp", value="Lớp 12A5 (K63)")
-        school = st.text_input("Trường", value="THPT NGÔ GIA TỰ")
-        date_text = st.text_input("Ngày chụp", value="Chủ nhật, ngày 25, tháng 10, năm 2026")
-        time_text = st.text_input("Thời gian", value="10:00 - 12:00 sáng")
-        location = st.text_input("Địa điểm", value="Trường THPT Ngô Gia Tự")
-        message = st.text_area("Lời nhắn", value="Mong cậu có thể đến và cùng tớ tạo ra thật nhiều kỷ niệm đẹp đẽ nhất của thời học sinh nhé! ✨")
-        sign_off = st.text_input("Chữ ký", value="hà myy")
-        
-        st.markdown("---")
-        photo = st.file_uploader("Tải ảnh ký yếu lên", type=["jpg", "jpeg", "png", "webp"])
-
-    # Tiêu đề chính
-    st.markdown('<div style="text-align:center; margin-bottom: 20px;">', unsafe_allow_html=True)
-    st.markdown('<div class="hero-title">★ THIỆP MỜI ★</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="sparkle-text">✦ Người mời: {name.strip()} ✦</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    left, right = st.columns([1.1, 0.9], gap="large")
-
-    with left:
-        st.markdown('<div class="dream-card">', unsafe_allow_html=True)
-        st.markdown(f"### ☁️ {class_name}")
-        st.markdown(f"**{school}**")
-        st.markdown("---")
-        st.markdown(f"🗓 **Ngày:** {date_text} — {time_text}")
-        st.markdown(f"📍 **Địa điểm:** {location}")
-        st.write("")
-        st.markdown(f"💌 *\"{message}\"*")
-        st.write("")
-        st.markdown(f"**Thân mời,**  \n*{sign_off}* <span class='spinning-cd' style='font-size:1.2rem;'>🪩</span>", unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with right:
-        if photo is not None:
-            st.markdown('<div class="polaroid">', unsafe_allow_html=True)
-            st.image(photo, use_container_width=True)
-            st.caption("★ a little memory to keep ★")
-            st.markdown('</div>', unsafe_allow_html=True)
-        else:
-            st.markdown("""
-            <div class="dream-card" style="text-align:center; min-height:280px; padding-top: 40px;">
-                <div style="font-size:3.8rem;" class="spinning-cd">💿</div>
-                <h3 style="margin-top:10px;">your memory goes here</h3>
-                <p style="color: #64748b; font-size: 0.9rem;" class="sparkle-text">✦ Chọn ảnh ở thanh bên trái để hiện polaroid nha ✦</p>
-            </div>
-            """, unsafe_allow_html=True)
-
-    st.write("")
-
-    # Khung nhạc Ditto Y2K
+with left:
     st.markdown('<div class="dream-card">', unsafe_allow_html=True)
-    st.markdown("### <span class='spinning-cd' style='font-size:1.5rem;'>🎶</span> Ditto (250 Remix) - NewJeans", unsafe_allow_html=True)
-    
-    if os.path.exists("ditto.mp3"):
-        st.audio("ditto.mp3")
+    st.markdown(f"### ☁️ {class_name}")
+    st.markdown(f"**{school}**")
+    st.markdown("---")
+    st.markdown(f"**{date_text}** · {time_text}")
+    st.markdown(f"📍 {location}")
+    st.write("")
+    st.markdown(f"> {message}")
+    st.write("")
+    st.markdown(f"*{sign_off}*")
+    st.markdown(f"**{name.strip() or 'Your Name'}** ✧")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with right:
+    if photo is not None:
+        st.markdown('<div class="polaroid">', unsafe_allow_html=True)
+        st.image(photo, use_container_width=True)
+        st.caption("a little memory to keep ✧")
+        st.markdown("</div>", unsafe_allow_html=True)
     else:
-        st.info("💡 M nhớ để file `ditto.mp3` vào chung thư mục với file `app.py` nhé!")
+        st.markdown("""
+        <div class="dream-card" style="text-align:center; min-height:300px;">
+          <div style="font-size:4.3rem;">☁️ ✦ ☁️</div>
+          <h3>your memory goes here</h3>
+          <p class="small-note">Chọn ảnh ở thanh bên trái để hiện ảnh polaroid của m.</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown('</div>', unsafe_allow_html=True)
+st.write("")
+if music is not None:
+    st.markdown('<div class="dream-card">', unsafe_allow_html=True)
+    st.markdown("### ♫ A song for this memory")
+    st.audio(music)
+    st.markdown("</div>", unsafe_allow_html=True)
+else:
+    st.info("♫ Chưa có nhạc — m tải file MP3/WAV/OGG lên ở thanh bên trái nhé.")
 
-    st.markdown('<div style="text-align:center; color:#0284c7; padding:15px;" class="sparkle-text">★ MADE OF CLOUDS, STAR SYMBOLS, AND SWEET MEMORIES 💙 ★</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align:center;color:#7099ba;padding:18px;">made of clouds, little stars, and memories ✧</div>', unsafe_allow_html=True)
